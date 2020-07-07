@@ -1,0 +1,6 @@
+{
+  "name": "CardGame",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./CardGame.tsx"
+}
