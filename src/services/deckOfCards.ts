@@ -1,4 +1,5 @@
 import { URL } from "./constants";
+import { CardClass } from "core/CardClass";
 import { fetchUrl } from "./utils";
 
 export const getNewDeckId = async () => {
@@ -7,19 +8,13 @@ export const getNewDeckId = async () => {
   return { deckId: deck_id, remaining };
 };
 
-// todo: handle: if no card returned
-export const drawCard = async (deckId: string) => {
-  const data = await fetchUrl(
-    `https://deckofcardsapi.com/api/deck/${deckId}/draw/?count=1`
-  );
+export const drawCard = async (deckId: string): Promise<CardClass | null> => {
+  const data = await fetchUrl(URL.DRAWCARD(deckId));
 
-  const card = data.cards[0];
-  console.log("*** card:", card);
+  if (data && data.cards && data.cards.length > 0) {
+    const card = data.cards[0];
+    return new CardClass(card, data.remaining);
+  }
 
-  return {
-    image: card.image,
-    value: card.value,
-    suit: card.suit,
-    remaining: data.remaining,
-  };
+  return null;
 };

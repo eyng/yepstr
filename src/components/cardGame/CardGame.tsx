@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { CardClass } from "core/CardClass";
 import { getNewDeckId, drawCard } from "services/deckOfCards";
 import s from "./CardGame.module.css";
 
@@ -27,6 +28,7 @@ const CardGame = () => {
   const [image, setImage] = useState("");
   const [value, setValue] = useState("");
   const [score, setScore] = useState(0);
+  const [message, setMessage] = useState("");
 
   // EFFECTS - GET DATA:
   useEffect(() => {
@@ -34,10 +36,13 @@ const CardGame = () => {
       const { deckId } = await getNewDeckId();
       setDeckId(deckId);
 
-      const { image, value, remaining } = await drawCard(deckId);
-      setImage(image);
-      setValue(value);
-      setRemaining(remaining);
+      const card = await drawCard(deckId);
+
+      if (card) {
+        setCard(card);
+      } else {
+        setMessage("No card received");
+      }
     };
     fetchData();
     return () => {}; // on unmount
@@ -45,23 +50,38 @@ const CardGame = () => {
 
   // FUNCTIONS:
   const onButtonClick = async (compare: number) => {
-    const { image, value: newValue, remaining } = await drawCard(deckId);
-
-    console.log("*** guess:", compare);
-    console.log("*** actual:", getCompare(newValue, value));
-
-    if (compare === getCompare(newValue, value)) {
-      setScore(score + 1);
+    if (remaining === 0) {
+      setMessage("No cards left");
+      return;
     }
 
+    const card = await drawCard(deckId);
+
+    if (card) {
+      const { value: newValue } = card;
+
+      if (compare === getCompare(newValue, value)) {
+        setScore(score + 1);
+        setMessage("Correct");
+      } else {
+        setMessage("Incorrect");
+      }
+
+      setCard(card);
+    } else {
+      setMessage("No card received");
+    }
+  };
+
+  const setCard = (card: CardClass) => {
+    const { image, value, remaining } = card;
     setImage(image);
     setValue(value);
     setRemaining(remaining);
   };
 
-  // QUESTION: USE VALUE ONLY? OR SUIT ALSO?
   // Current implementation:
-  //   Only consider the value, and not the suit
+  //   Only consider the value. The suit is ignored.
   //   -1 for lower
   //    1 for higher
   //    0 for equal
@@ -79,12 +99,10 @@ const CardGame = () => {
         <div>Cards left: {remaining}</div>
         <div>Correct guesses: {score}</div>
       </div>
-      <br />
 
-      <div>
-        <img alt="" src={image} />
+      <div className={s.image}>
+        <img alt={value} src={image} />
       </div>
-      <br />
 
       <div className="flexRow">
         <div>
@@ -92,6 +110,9 @@ const CardGame = () => {
         </div>
         <div>
           <button onClick={() => onButtonClick(1)}>Higher</button>
+        </div>
+        <div className={message === "Correct" ? s.correct : s.incorrect}>
+          {message}
         </div>
       </div>
     </div>

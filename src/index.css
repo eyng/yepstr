@@ -12,8 +12,31 @@ code {
     monospace;
 }
 
+button {
+  box-shadow: 3px 3px 4px rgba(0, 0, 0, 0.3);
+  background-color: gainsboro;
+  border: 1px solid gainsboro;
+  border-radius: 5px;
+  padding: 3px 7px;
+  cursor: pointer;
+  opacity: 0.8;
+}
+
+button:hover {
+  background-color: #bbbbbb;
+  border: 1px solid #bbbbbb;
+}
+
 .flexRow {
   display: flex;
+}
+
+.flexRow > div {
+  margin-right: 20px;
+}
+
+.flexRow > div:last-child {
+  margin-right: 0;
 }
 
 .flexRowStretch {
