@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { CardClass } from "core/CardClass";
+import { ProgressBar } from "components";
 import { getNewDeckId, drawCard } from "services/deckOfCards";
 import s from "./CardGame.module.css";
 
@@ -118,6 +119,12 @@ const CardGame = () => {
           {message}
         </div>
       </div>
+
+      <ProgressBar
+        correct={score}
+        incorrect={51 - remaining - score}
+        total={51}
+      />
     </div>
   );
 };

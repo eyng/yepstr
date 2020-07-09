@@ -1,0 +1,9 @@
+.root {
+  background-color: #dddddd;
+  display: flex;
+}
+
+.root > div {
+  text-align: center;
+  color: white;
+}
