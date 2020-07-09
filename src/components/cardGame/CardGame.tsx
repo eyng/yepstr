@@ -54,7 +54,7 @@ const CardGame = () => {
   // FUNCTIONS:
   const onButtonClick = async (compare: number) => {
     if (remaining === 0) {
-      setMessage("No cards left");
+      setMessage("");
       return;
     }
 
