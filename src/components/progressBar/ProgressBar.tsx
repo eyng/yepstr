@@ -21,6 +21,8 @@ const part = (n: number, total: number, color: string) => (
 // ----------
 // COMPONENT:
 const ProgressBar = ({ correct, incorrect, total }: Props) => {
+  if (correct + incorrect === 0) return null;
+
   return (
     <div className={s.root}>
       {part(correct, total, "teal")}
