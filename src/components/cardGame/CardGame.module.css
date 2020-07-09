@@ -26,6 +26,10 @@
   height: 314px;
 }
 
+.smallImage {
+  height: 125px;
+}
+
 .image img {
   box-shadow: 3px 3px 4px rgba(0, 0, 0, 0.3);
   background-color: gainsboro;

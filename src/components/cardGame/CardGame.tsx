@@ -29,6 +29,7 @@ const CardGame = () => {
   const [value, setValue] = useState("");
   const [score, setScore] = useState(0);
   const [message, setMessage] = useState("");
+  const [previousImage, setPreviousImage] = useState("");
 
   // EFFECTS - GET DATA:
   useEffect(() => {
@@ -74,8 +75,9 @@ const CardGame = () => {
   };
 
   const setCard = (card: CardClass) => {
-    const { image, value, remaining } = card;
-    setImage(image);
+    setPreviousImage(image);
+    const { image: newImage, value, remaining } = card;
+    setImage(newImage);
     setValue(value);
     setRemaining(remaining);
   };
@@ -100,8 +102,9 @@ const CardGame = () => {
         <div>Correct guesses: {score}</div>
       </div>
 
-      <div className={s.image}>
-        <img alt={value} src={image} />
+      <div className="flexRowStretch">
+        <img className={s.image} alt={value} src={image} />
+        <img alt={value} src={previousImage} className={s.smallImage} />
       </div>
 
       <div className="flexRow">
